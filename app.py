@@ -6,14 +6,14 @@ def main_page():
     st.set_page_config("Simplex", layout="wide")
     
     with st.sidebar:
-        st.title("Método Simplex")
-        size = st.number_input("Número de variables:", min_value=2, step=1)
-        res = st.number_input("Número de restricciones:", min_value=1, step=1)
-        M = st.number_input("Valor de M:", min_value=0, value=1000, step=1000)
+        st.title("Simplex Method")
+        size = st.number_input("Number of variables:", min_value=2, step=1)
+        res = st.number_input("Number of restrictions:", min_value=1, step=1)
+        M = st.number_input("M value:", min_value=0, value=1000, step=1000)
 
         st.write("#")
 
-        if st.button("Resolver", type="primary", width="stretch"):
+        if st.button("Solve", type="primary", width="stretch", icon=":material/Keyboard Arrow Right:"):
             st.session_state["size"] = size
             st.session_state["res"] = res
             st.session_state["M"] = M
@@ -40,7 +40,7 @@ def main_page():
 
     # Función objetivo
     with st.container():
-        st.subheader("Función Objetivo")
+        st.subheader("Objective Function")
         
         cols_fo = st.columns([1/(size+2) for _ in range(size)] + [2/(size+2)],
             gap="medium")
@@ -49,12 +49,12 @@ def main_page():
                 st.text(f"x{i+1}")
                 st.number_input("", value=0, key=f"0-x{i+1}", label_visibility="collapsed")
         with cols_fo[-1]:
-            st.text("Objetivo")
-            st.selectbox("", ["Minimizar", "Maximizar"], label_visibility="collapsed", key="objetivo")
+            st.text("Objective")
+            st.selectbox("", ["Minimize", "Maximize"], label_visibility="collapsed", key="objetivo")
 
     # Restricciones 
     with st.container():
-        st.subheader("Restricciones")
+        st.subheader("Restrictions")
         cols_res = st.columns(size+2, gap="medium")
 
         for i, col in enumerate(cols_res[:-2]):
@@ -74,11 +74,11 @@ def main_page():
                 st.number_input("", value=0, key=f"{r}-ld", label_visibility="collapsed")
             
 def solve():
-    st.set_page_config("Solución Simplex", layout="wide")
+    st.set_page_config("Simplex Solution", layout="wide")
 
     with st.sidebar:
-        st.title("Método Simplex")
-        if st.button("Regresar", type="primary", width="stretch"):
+        st.title("Simplex Method")
+        if st.button("Go Back", icon=":material/Keyboard Arrow Left:", type="primary", width="stretch"):
             st.switch_page(st.Page(main_page))
 
     up = st.container()
@@ -108,7 +108,7 @@ def solve():
     # Multiplicar x -1 si es necesario
     for r in range(st.session_state.res+1):
         if r == 0:
-            if st.session_state.obj == "Maximizar":
+            if st.session_state.obj == "Maximize":
                 matrix.loc[r] = matrix.loc[r] * -1
         else:
             if matrix.loc[r, "ld"] < 0:
@@ -127,12 +127,12 @@ def solve():
         matrix.loc[0] -=  matrix.loc[int(a)].multiply(st.session_state.M)
 
     i = 0
-    show_iter = st.expander("Ver iteraciones")
+    show_iter = st.expander("Show iterations")
 
     # start gauss-jordan loop
     while matrix.drop(columns=["z", "ld"]).loc[0].min(numeric_only=True) < 0:
         col_i, col_m = show_iter.container().columns([0.2,0.8])
-        col_i.text(f"Iteración {i}")
+        col_i.text(f"Iter {i}")
         col_m.dataframe(matrix[cols])
 
         pvt_col = matrix.drop(columns=["z", "ld"]).idxmin(axis="columns")[0]
@@ -156,12 +156,12 @@ def solve():
         i += 1
         
 
-    if st.session_state.obj == "Minimizar":
+    if st.session_state.obj == "Minimize":
         matrix.loc[0] *= -1
     
 
     col_i, col_m = show_iter.container().columns([0.2,0.8])
-    col_i.text(f"Iteración {i}")
+    col_i.text(f"Iter {i}")
     col_m.dataframe(matrix[cols])
 
     up.latex(f"Z = {matrix.loc[0,'ld']:.2f}")
