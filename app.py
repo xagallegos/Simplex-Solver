@@ -13,7 +13,7 @@ def main_page():
 
         st.write("#")
 
-        if st.button("Solve", type="primary", width="stretch", icon=":material/Keyboard_Arrow_Right:"):
+        if st.button("Solve", type="primary", width="stretch", icon=":material/keyboard_arrow_right:"):
             st.session_state["size"] = size
             st.session_state["res"] = res
             st.session_state["M"] = M
@@ -78,7 +78,7 @@ def solve():
 
     with st.sidebar:
         st.title("Simplex Method")
-        if st.button("Go Back", icon=":material/Keyboard_Arrow_Left:", type="primary", width="stretch"):
+        if st.button("Go Back", icon=":material/keyboard_arrow_left:", type="primary", width="stretch"):
             st.switch_page(st.Page(main_page))
 
     up = st.container()
