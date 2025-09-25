@@ -3,7 +3,8 @@
 A linear programming solver using the **Simplex Method**, implemented in ```Python``` with a ```Streamlit``` interface.  
 
 
-It is deployed on Streamlit Cloud and available for public use here: **[https://simplex-solver.streamlit.app/](https://simplex-solver.streamlit.app/)**
+It is deployed on Streamlit Cloud and available for public use here:
+**<a href="https://simplex-solver.streamlit.app/" target="_blank">https://simplex-solver.streamlit.app/</a>**
 
 
 
