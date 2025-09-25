@@ -66,7 +66,7 @@ def main_page():
         with cols_res[-2]:
             st.text("Signo")
             for  r in range(1, res+1):
-                st.selectbox("", ["<=", "=", ">="], label_visibility="collapsed", key=f"{r}-s")
+                st.selectbox("", ["≤", "=", "≥"], label_visibility="collapsed", key=f"{r}-s")
         
         with cols_res[-1]:
             st.text("LD")
@@ -88,7 +88,7 @@ def solve():
     # Añadir variables de holgura y artificiales
     for r in range(1, st.session_state.res+1):
         signo = matrix.loc[r, "s"]
-        if signo == "<=":
+        if signo == "≤":
             matrix.loc[r, f"s{r}"] = 1
         elif signo == "=":
             matrix.loc[r, f"a{r}"] = 1
